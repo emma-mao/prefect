@@ -61,6 +61,19 @@ class TestCreateWorkQueue:
         assert queue.work_pool_id == work_pool.id
         assert queue.name == queue_name
 
+    def test_create_work_queue_with_priority(self, priority):
+        queue_name = "q-name"
+        res = invoke_and_assert(
+            command=f"work-queue create {queue_name} -r {priority}",
+            expected_code=0,
+        )
+        queue = read_queue(
+            name=queue_name,
+            priority=priority
+        )
+        assert queue.name == queue_name
+        assert queue.priority == priority
+
     def test_work_queue_with_pool_and_tag_errors(
         self,
         work_pool,
