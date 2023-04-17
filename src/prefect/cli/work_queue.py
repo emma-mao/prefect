@@ -85,6 +85,14 @@ async def create(
         "--pool",
         help="The name of the work pool to create the work queue in.",
     ),
+    priority: Optional[int] = typer.Option(
+        None,
+        "-r",
+        "--priority",
+        help=(
+            "The queue's priority. Lower values are higher priority (1 is the highest)."
+        ),
+    ),
 ):
     """
     Create a work queue.
@@ -110,6 +118,7 @@ async def create(
                 name=name,
                 tags=tags or None,
                 work_pool_name=pool,
+                priority=priority,
             )
             if limit is not None:
                 await client.update_work_queue(
